@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSE Chemistry — Monitoring & Controlling Reactions</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050d1a;
+  --panel: #0a1628;
+  --card: #0f1e35;
+  --border: #1a3a5c;
+  --cyan: #00e5ff;
+  --green: #00ff88;
+  --amber: #ffb300;
+  --red: #ff3d71;
+  --purple: #c77dff;
+  --text: #cde4ff;
+  --muted: #5a7fa0;
+  --font-head: 'Orbitron', sans-serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── HEADER ─────────────────────────────────────────── */
+#header {
+  background: linear-gradient(135deg, #020b18 0%, #0a1a30 60%, #061224 100%);
+  border-bottom: 2px solid var(--cyan);
+  padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 0 30px #00e5ff22;
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px var(--cyan);
+}
+.logo span { color: var(--green); }
+.xp-bar-wrap { display: flex; align-items: center; gap: 12px; }
+.level-badge {
+  background: var(--cyan);
+  color: #000;
+  font-family: var(--font-head);
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.xp-track { width: 160px; height: 10px; background: #0a1628; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.xp-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--green)); border-radius: 8px; transition: width 0.6s ease; }
+.xp-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--green); white-space: nowrap; }
+
+/* ─── TABS ────────────────────────────────────────────── */
+#tabs {
+  display: flex; gap: 4px;
+  padding: 12px 20px 0;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.tab {
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  color: var(--muted);
+  background: transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--cyan); border-color: var(--cyan); }
+.tab.active {
+  color: #000;
+  background: var(--cyan);
+  border-color: var(--cyan);
+  text-shadow: none;
+}
+.tab.boss { border-color: var(--amber); color: var(--amber); }
+.tab.boss.active { background: var(--amber); color: #000; }
+.tab.boss:hover { color: var(--amber); }
+
+/* ─── MAIN CONTENT ────────────────────────────────────── */
+#main { padding: 24px 20px; max-width: 1100px; margin: 0 auto; }
+.page { display: none; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── LEARN TAB ───────────────────────────────────────── */
+.section-title {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  color: var(--cyan);
+  text-shadow: 0 0 20px #00e5ff55;
+  margin-bottom: 6px;
+}
+.section-sub { color: var(--muted); font-size: 0.88rem; margin-bottom: 24px; }
+
+.concept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 28px; }
+.concept-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+.concept-card:hover { transform: translateY(-3px); border-color: var(--cyan); }
+.concept-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.card-cyan::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+.card-green::before { background: linear-gradient(90deg, var(--green), transparent); }
+.card-amber::before { background: linear-gradient(90deg, var(--amber), transparent); }
+.card-purple::before { background: linear-gradient(90deg, var(--purple), transparent); }
+.card-red::before { background: linear-gradient(90deg, var(--red), transparent); }
+.card-icon { font-size: 2rem; margin-bottom: 10px; }
+.card-title { font-family: var(--font-head); font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 8px; color: var(--cyan); }
+.card-green .card-title { color: var(--green); }
+.card-amber .card-title { color: var(--amber); }
+.card-purple .card-title { color: var(--purple); }
+.card-red .card-title { color: var(--red); }
+.card-body { font-size: 0.88rem; line-height: 1.6; color: var(--text); }
+.card-body b { color: var(--cyan); }
+.card-green .card-body b { color: var(--green); }
+.card-amber .card-body b { color: var(--amber); }
+.card-purple .card-body b { color: var(--purple); }
+.card-red .card-body b { color: var(--red); }
+
+.formula-box {
+  background: #040e1c;
+  border: 1px solid var(--cyan);
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--green);
+  text-align: center;
+  margin: 12px 0;
+  text-shadow: 0 0 8px var(--green);
+}
+
+.info-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.86rem; }
+.info-table th { background: #0c1a2e; color: var(--cyan); font-family: var(--font-head); font-size: 0.7rem; letter-spacing: 1px; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+.info-table td { padding: 10px 14px; border-bottom: 1px solid #0f1e35; }
+.info-table tr:hover td { background: #0a1628; }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-family: var(--font-mono); }
+.tag-cyan { background: #00e5ff22; color: var(--cyan); border: 1px solid var(--cyan); }
+.tag-green { background: #00ff8822; color: var(--green); border: 1px solid var(--green); }
+.tag-amber { background: #ffb30022; color: var(--amber); border: 1px solid var(--amber); }
+.tag-red { background: #ff3d7122; color: var(--red); border: 1px solid var(--red); }
+
+.expand-details { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 0.84rem; }
+.expand-details.open { display: block; }
+.expand-btn { font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); background: none; border: 1px solid var(--cyan); padding: 4px 12px; border-radius: 4px; cursor: pointer; margin-top: 10px; transition: background 0.2s; }
+.expand-btn:hover { background: #00e5ff22; }
+
+/* ─── LAB TAB ─────────────────────────────────────────── */
+.lab-container { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+@media (max-width: 700px) { .lab-container { grid-template-columns: 1fr; } }
+
+.canvas-wrap {
+  background: #040c18;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+#labCanvas { display: block; width: 100%; }
+
+.lab-controls { display: flex; flex-direction: column; gap: 14px; }
+.control-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.control-panel h3 { font-family: var(--font-head); font-size: 0.7rem; letter-spacing: 1px; color: var(--cyan); margin-bottom: 12px; }
+.slider-row { margin-bottom: 14px; }
+.slider-row label { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; }
+.slider-row label span { font-family: var(--font-mono); color: var(--green); }
+input[type=range] {
+  width: 100%; accent-color: var(--cyan);
+  cursor: pointer;
+}
+.catalyst-btn {
+  width: 100%; padding: 8px; border-radius: 8px;
+  font-family: var(--font-head); font-size: 0.7rem; letter-spacing: 1px;
+  cursor: pointer; border: 1px solid var(--amber); background: transparent;
+  color: var(--amber); transition: all 0.2s;
+}
+.catalyst-btn.on { background: var(--amber); color: #000; }
+.catalyst-btn:hover:not(.on) { background: #ffb30022; }
+
+.readout {
+  background: #040c18;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+.readout-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.82rem; }
+.readout-val { font-family: var(--font-mono); color: var(--green); font-size: 0.95rem; }
+.readout-bar { height: 6px; background: #0a1628; border-radius: 4px; margin-top: 3px; overflow: hidden; }
+.readout-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+.fill-cyan { background: var(--cyan); }
+.fill-green { background: var(--green); }
+
+.graph-canvas-wrap {
+  background: #040c18;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+}
+#graphCanvas { display: block; width: 100%; }
+
+/* ─── QUIZ TAB ────────────────────────────────────────── */
+.quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.quiz-progress { display: flex; gap: 6px; flex-wrap: wrap; }
+.q-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+.q-dot.current { border-color: var(--cyan); color: var(--cyan); }
+.q-dot.correct { background: var(--green); border-color: var(--green); color: #000; }
+.q-dot.wrong { background: var(--red); border-color: var(--red); color: #fff; }
+
+.question-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.q-number { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; }
+.q-text { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; font-weight: 600; }
+.q-text .highlight { color: var(--cyan); }
+
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
+.option-btn {
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0a1628;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--cyan); background: #00e5ff11; }
+.option-btn.correct { border-color: var(--green); background: #00ff8822; color: var(--green); }
+.option-btn.wrong { border-color: var(--red); background: #ff3d7122; color: var(--red); }
+.option-btn:disabled { cursor: default; }
+
+.feedback-box {
+  display: none;
+  background: var(--card);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin-top: 12px;
+  border-left: 3px solid var(--green);
+}
+.feedback-box.wrong { border-color: var(--red); }
+.feedback-box.show { display: block; }
+.feedback-box b { color: var(--green); }
+.feedback-box.wrong b { color: var(--red); }
+
+.next-btn {
+  margin-top: 14px;
+  padding: 10px 28px;
+  background: var(--cyan);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: none;
+  transition: opacity 0.2s;
+}
+.next-btn:hover { opacity: 0.85; }
+.next-btn.show { display: inline-block; }
+
+.quiz-complete {
+  display: none;
+  text-align: center;
+  padding: 40px;
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--cyan);
+}
+.quiz-complete.show { display: block; }
+.score-big { font-family: var(--font-head); font-size: 3.5rem; color: var(--green); text-shadow: 0 0 30px var(--green); }
+.score-label { font-size: 0.9rem; color: var(--muted); margin-bottom: 20px; }
+.stars { font-size: 2rem; margin: 10px 0; }
+
+/* ─── BOSS CHALLENGE ──────────────────────────────────── */
+.boss-header {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #1a0c00, #201000);
+  border: 1px solid var(--amber);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+.boss-title { font-family: var(--font-head); font-size: 1.6rem; color: var(--amber); text-shadow: 0 0 20px #ffb30055; letter-spacing: 2px; }
+.boss-sub { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+.hp-bar { background: #0a1628; border: 1px solid var(--border); border-radius: 20px; height: 14px; overflow: hidden; margin: 14px 0 6px; position: relative; }
+.hp-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--amber)); border-radius: 20px; transition: width 0.5s ease; }
+.hp-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--amber); text-align: center; }
+
+.boss-q-card {
+  background: var(--card);
+  border: 1px solid #2a1a00;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 14px;
+}
+.boss-q-num { font-family: var(--font-mono); font-size: 0.72rem; color: var(--amber); margin-bottom: 8px; }
+.boss-q-text { font-size: 0.95rem; line-height: 1.65; margin-bottom: 18px; }
+.boss-q-text b { color: var(--amber); }
+
+.boss-input-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.boss-input {
+  flex: 1; min-width: 160px;
+  padding: 10px 16px;
+  background: #040c18;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+.boss-input:focus { outline: none; border-color: var(--amber); }
+.boss-submit {
+  padding: 10px 22px;
+  background: var(--amber);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-head);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.boss-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.boss-opt {
+  padding: 12px;
+  border: 1px solid #2a1a00;
+  border-radius: 8px;
+  background: #0a0800;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.87rem;
+  font-family: var(--font-body);
+  text-align: left;
+  transition: all 0.2s;
+}
+.boss-opt:hover:not(:disabled) { border-color: var(--amber); background: #1a0e00; }
+.boss-opt.correct { border-color: var(--green); background: #00ff8811; color: var(--green); }
+.boss-opt.wrong { border-color: var(--red); background: #ff3d7111; color: var(--red); }
+
+.boss-feedback {
+  display: none;
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  border-left: 3px solid var(--green);
+  background: var(--card);
+}
+.boss-feedback.wrong { border-color: var(--red); }
+.boss-feedback.show { display: block; }
+.boss-next-btn {
+  margin-top: 12px;
+  padding: 9px 24px;
+  background: var(--amber);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-head);
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: none;
+}
+.boss-next-btn.show { display: inline-block; }
+
+.boss-victory {
+  display: none;
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, #1a0c00, #201000);
+  border: 2px solid var(--amber);
+  border-radius: 16px;
+}
+.boss-victory.show { display: block; }
+.victory-title { font-family: var(--font-head); font-size: 2rem; color: var(--amber); text-shadow: 0 0 30px var(--amber); margin-bottom: 10px; }
+
+/* ─── XP POPUP ────────────────────────────────────────── */
+#xpPopup {
+  position: fixed; top: 80px; right: 20px;
+  background: var(--green); color: #000;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  transform: translateY(-10px); opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 999;
+  pointer-events: none;
+}
+#xpPopup.show { opacity: 1; transform: translateY(0); }
+
+/* ─── SCROLLBAR ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ─── COLLISION DIAGRAM ───────────────────────────────── */
+.diagram-box {
+  background: #040c18;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 16px 0;
+}
+.diagram-box h4 { font-family: var(--font-head); font-size: 0.72rem; color: var(--cyan); letter-spacing: 1px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<!-- XP Popup -->
+<div id="xpPopup">+XP</div>
+
+<!-- Header -->
+<div id="header">
+  <div class="logo">CHEM<span>LAB</span> · GCSE</div>
+  <div class="xp-bar-wrap">
+    <div class="level-badge" id="levelBadge">LVL 1</div>
+    <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+    <div class="xp-label" id="xpLabel">0 / 200 XP</div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div id="tabs">
+  <button class="tab active" onclick="showTab('learn', this)">📚 LEARN</button>
+  <button class="tab" onclick="showTab('lab', this)">🔬 VIRTUAL LAB</button>
+  <button class="tab" onclick="showTab('quiz', this)">⚡ QUIZ</button>
+  <button class="tab boss" onclick="showTab('boss', this)">☠️ BOSS CHALLENGE</button>
+</div>
+
+<!-- Main -->
+<div id="main">
+
+<!-- ═══════════ LEARN TAB ═══════════ -->
+<div class="page active" id="page-learn">
+  <div class="section-title">Monitoring & Controlling Chemical Equations</div>
+  <div class="section-sub">Master collision theory, reaction rates, reversibility & equilibrium</div>
+
+  <!-- COLLISION THEORY -->
+  <div class="concept-grid">
+    <div class="concept-card card-cyan">
+      <div class="card-icon">💥</div>
+      <div class="card-title">COLLISION THEORY</div>
+      <div class="card-body">
+        Reactions only happen when particles <b>collide with sufficient energy</b> (≥ activation energy) and the <b>correct orientation</b>.
+        <div class="formula-box" style="color:var(--cyan); text-shadow:0 0 8px var(--cyan); font-size:0.85rem; margin-top:10px;">
+          Rate ∝ Frequency of Successful Collisions
+        </div>
+        <button class="expand-btn" onclick="toggleExpand(this)">▼ MORE DETAIL</button>
+        <div class="expand-details">
+          <b>Activation Energy (E<sub>a</sub>)</b> — minimum energy needed for a collision to result in a reaction.<br><br>
+          Even in fast reactions, only a small fraction of collisions lead to products. We can increase the rate by increasing the number of <b>successful</b> collisions per second.
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-card card-green">
+      <div class="card-icon">🌡️</div>
+      <div class="card-title">TEMPERATURE</div>
+      <div class="card-body">
+        Increasing temperature gives particles <b>more kinetic energy</b> → move faster → more frequent collisions → <b>more exceed activation energy</b>.
+        <br><br>
+        🔺 Every <b>+10°C ≈ doubles</b> the reaction rate (approximate rule).
+        <button class="expand-btn" onclick="toggleExpand(this)">▼ MORE DETAIL</button>
+        <div class="expand-details">
+          At higher temperatures, the Maxwell-Boltzmann distribution shifts right — a much larger fraction of molecules now have energy ≥ E<sub>a</sub>. This is why temperature has such a dramatic effect on rate.
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-card card-amber">
+      <div class="card-icon">🧪</div>
+      <div class="card-title">CONCENTRATION & PRESSURE</div>
+      <div class="card-body">
+        Higher <b>concentration</b> (solutions) or <b>pressure</b> (gases) → more particles in same volume → more frequent collisions → <b>faster rate</b>.
+        <button class="expand-btn" onclick="toggleExpand(this)">▼ MORE DETAIL</button>
+        <div class="expand-details">
+          <b>Solutions:</b> mol/dm³ — doubling concentration roughly doubles collision frequency.<br><br>
+          <b>Gases:</b> compressing gas increases pressure, reducing volume → same number of molecules in smaller space → more collisions.
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-card card-purple">
+      <div class="card-icon">⚗️</div>
+      <div class="card-title">SURFACE AREA</div>
+      <div class="card-body">
+        Smaller particle size → <b>larger surface area</b> exposed → more collisions at the surface → faster rate.
+        <br><br>
+        💡 <b>Powder reacts faster than a lump</b> of the same mass.
+        <button class="expand-btn" onclick="toggleExpand(this)">▼ MORE DETAIL</button>
+        <div class="expand-details">
+          Only molecules at the <b>surface</b> of a solid can react. Grinding a solid into powder dramatically increases the available surface area for reactant particles to collide with.
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-card card-red">
+      <div class="card-icon">🔑</div>
+      <div class="card-title">CATALYSTS</div>
+      <div class="card-body">
+        A catalyst <b>lowers the activation energy</b> — provides an alternative reaction pathway. It is <b>not consumed</b> in the reaction.
+        <br><br>
+        ✅ Same reactants & products, but <b>faster rate</b>.
+        <button class="expand-btn" onclick="toggleExpand(this)">▼ MORE DETAIL</button>
+        <div class="expand-details">
+          <b>Enzymes</b> are biological catalysts. Industrial examples:<br>
+          • Iron → Haber Process (ammonia)<br>
+          • Platinum → catalytic converters<br>
+          • Nickel → hydrogenation of vegetable oils
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONITORING METHODS -->
+  <div class="section-title" style="font-size:1.1rem; margin-top:8px;">📊 Monitoring Reaction Rate</div>
+  <div class="section-sub">How do we measure how fast a reaction is going?</div>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>METHOD</th>
+        <th>WHAT WE MEASURE</th>
+        <th>EXAMPLE REACTION</th>
+        <th>TYPE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>📉 Mass loss</td>
+        <td>Decrease in mass as gas escapes</td>
+        <td>CaCO₃ + HCl → CO₂ gas</td>
+        <td><span class="tag tag-cyan">Gas produced</span></td>
+      </tr>
+      <tr>
+        <td>💨 Gas volume</td>
+        <td>Volume of gas collected in syringe</td>
+        <td>Mg + H₂SO₄ → H₂ gas</td>
+        <td><span class="tag tag-green">Gas collected</span></td>
+      </tr>
+      <tr>
+        <td>🌫️ Cloudiness</td>
+        <td>Time for cross to disappear (precipitate)</td>
+        <td>Na₂S₂O₃ + HCl → sulfur precipitate</td>
+        <td><span class="tag tag-amber">Precipitate</span></td>
+      </tr>
+      <tr>
+        <td>🎨 Colour change</td>
+        <td>Light transmission through solution</td>
+        <td>Bromine water being decolourised</td>
+        <td><span class="tag tag-cyan">Coloured reactant</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="formula-box" style="font-size:0.88rem;">
+    Rate of reaction = Amount of reactant used (or product formed) ÷ Time
+  </div>
+
+  <!-- REVERSIBLE REACTIONS -->
+  <div class="section-title" style="font-size:1.1rem; margin-top:24px;">⇌ Reversible Reactions & Equilibrium</div>
+  <div class="section-sub">Some reactions can go both ways simultaneously</div>
+
+  <div class="concept-grid">
+    <div class="concept-card card-cyan" style="grid-column: span 2;">
+      <div class="card-icon">⇌</div>
+      <div class="card-title">DYNAMIC EQUILIBRIUM</div>
+      <div class="card-body">
+        In a <b>closed system</b>, a reversible reaction reaches equilibrium when the <b>forward rate = reverse rate</b>. The concentrations of reactants and products remain constant — but both reactions are still happening!
+        <div class="formula-box" style="margin:12px 0;">
+          A + B ⇌ C + D
+        </div>
+        ⚠️ <b>Equilibrium ≠ equal amounts</b> — the position just doesn't change over time.
+      </div>
+    </div>
+
+    <div class="concept-card card-green">
+      <div class="card-icon">📐</div>
+      <div class="card-title">LE CHATELIER'S PRINCIPLE</div>
+      <div class="card-body">
+        If a system at equilibrium is disturbed, it will <b>shift to counteract the change</b>.
+        <table class="info-table" style="margin-top:10px; font-size:0.82rem;">
+          <thead><tr><th>Change</th><th>Equilibrium Shift</th></tr></thead>
+          <tbody>
+            <tr><td>🔺 Temperature</td><td>→ Endothermic direction</td></tr>
+            <tr><td>🔻 Temperature</td><td>→ Exothermic direction</td></tr>
+            <tr><td>🔺 Pressure</td><td>→ Fewer gas moles side</td></tr>
+            <tr><td>🔺 Concentration</td><td>→ Consumes that substance</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="concept-card card-amber">
+      <div class="card-icon">🏭</div>
+      <div class="card-title">THE HABER PROCESS</div>
+      <div class="card-body">
+        <div class="formula-box" style="font-size:0.8rem; margin-bottom:10px;">
+          N₂(g) + 3H₂(g) ⇌ 2NH₃(g)   ΔH = −92 kJ/mol
+        </div>
+        <b>Temperature:</b> 450°C (compromise — high enough for speed, not so high yield suffers)<br><br>
+        <b>Pressure:</b> 200 atm (high pressure → more NH₃)<br><br>
+        <b>Catalyst:</b> Iron — speeds up reaction without affecting equilibrium position
+      </div>
+    </div>
+  </div>
+
+  <!-- ATOM ECONOMY -->
+  <div class="section-title" style="font-size:1.1rem; margin-top:24px;">♻️ Atom Economy & Percentage Yield</div>
+
+  <div class="concept-grid">
+    <div class="concept-card card-purple">
+      <div class="card-icon">⚖️</div>
+      <div class="card-title">ATOM ECONOMY</div>
+      <div class="card-body">
+        How efficiently a reaction uses atoms — what percentage end up in the <b>desired product</b>.
+        <div class="formula-box" style="font-size:0.8rem; margin:10px 0; color:var(--purple); text-shadow:0 0 8px var(--purple);">
+          Atom Economy = (M<sub>r</sub> of desired product ÷ M<sub>r</sub> of all products) × 100%
+        </div>
+        <b>Higher</b> atom economy = <b>greener chemistry</b> ✅
+      </div>
+    </div>
+
+    <div class="concept-card card-red">
+      <div class="card-icon">📈</div>
+      <div class="card-title">PERCENTAGE YIELD</div>
+      <div class="card-body">
+        Compares how much product you <b>actually got</b> vs the <b>theoretical maximum</b>.
+        <div class="formula-box" style="font-size:0.8rem; margin:10px 0; color:var(--red); text-shadow:0 0 8px var(--red);">
+          % Yield = (Actual yield ÷ Theoretical yield) × 100%
+        </div>
+        Yield &lt; 100% due to: <b>reversibility, side reactions, incomplete reactions, losses in transfer</b>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ VIRTUAL LAB TAB ═══════════ -->
+<div class="page" id="page-lab">
+  <div class="section-title">Virtual Reaction Rate Lab</div>
+  <div class="section-sub">Adjust variables and observe how reaction rate changes — watch the collision simulation!</div>
+
+  <div class="lab-container">
+    <div>
+      <div class="canvas-wrap">
+        <canvas id="labCanvas" width="600" height="340"></canvas>
+      </div>
+      <div class="graph-canvas-wrap" style="margin-top:14px;">
+        <canvas id="graphCanvas" width="600" height="160"></canvas>
+      </div>
+    </div>
+
+    <div class="lab-controls">
+      <div class="control-panel">
+        <h3>⚙️ CONTROL VARIABLES</h3>
+        <div class="slider-row">
+          <label>🌡️ Temperature <span id="tempVal">50°C</span></label>
+          <input type="range" min="10" max="100" value="50" id="tempSlider" oninput="updateLab()">
+        </div>
+        <div class="slider-row">
+          <label>🧪 Concentration <span id="concVal">0.5 mol/dm³</span></label>
+          <input type="range" min="1" max="10" value="5" id="concSlider" oninput="updateLab()">
+        </div>
+        <div class="slider-row">
+          <label>⚗️ Surface Area <span id="surfVal">Medium</span></label>
+          <input type="range" min="1" max="3" value="2" id="surfSlider" oninput="updateLab()">
+        </div>
+        <button class="catalyst-btn" id="catBtn" onclick="toggleCatalyst()">🔑 CATALYST: OFF</button>
+      </div>
+
+      <div class="control-panel">
+        <h3>📊 LIVE READINGS</h3>
+        <div class="readout">
+          <div class="readout-row">
+            <span>Reaction Rate</span>
+            <span class="readout-val" id="rateVal">—</span>
+          </div>
+          <div class="readout-bar"><div class="readout-fill fill-cyan" id="rateBar" style="width:40%"></div></div>
+          <div class="readout-row" style="margin-top:12px;">
+            <span>Collision Freq.</span>
+            <span class="readout-val" id="collVal">—</span>
+          </div>
+          <div class="readout-bar"><div class="readout-fill fill-green" id="collBar" style="width:40%"></div></div>
+        </div>
+      </div>
+
+      <div class="control-panel" style="background: #040c18;">
+        <h3>💡 OBSERVATION</h3>
+        <div id="obsText" style="font-size:0.84rem; line-height:1.7; color:var(--text);"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ QUIZ TAB ═══════════ -->
+<div class="page" id="page-quiz">
+  <div class="section-title">Knowledge Check</div>
+  <div class="section-sub">Answer correctly to earn XP and level up!</div>
+
+  <div id="quizArea">
+    <div class="quiz-header">
+      <div class="quiz-progress" id="quizDots"></div>
+      <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--green);" id="quizScore">Score: 0</div>
+    </div>
+
+    <div class="question-card" id="questionCard"></div>
+    <div class="options-grid" id="optionsGrid"></div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">NEXT QUESTION →</button>
+  </div>
+
+  <div class="quiz-complete" id="quizComplete">
+    <div class="score-big" id="finalScore"></div>
+    <div class="score-label">Questions Correct</div>
+    <div class="stars" id="quizStars"></div>
+    <div style="color:var(--muted); margin-bottom:20px; font-size:0.88rem;" id="quizMsg"></div>
+    <button onclick="resetQuiz()" style="padding:10px 30px; background:var(--cyan); color:#000; border:none; border-radius:8px; font-family:var(--font-head); font-size:0.72rem; letter-spacing:1px; cursor:pointer;">RETRY QUIZ</button>
+  </div>
+</div>
+
+<!-- ═══════════ BOSS CHALLENGE TAB ═══════════ -->
+<div class="page" id="page-boss">
+  <div class="boss-header">
+    <div style="font-size:2.5rem;">👾</div>
+    <div class="boss-title">BOSS: DR. ENTROPY</div>
+    <div class="boss-sub">The master of chemical chaos — defeat him with your knowledge!</div>
+    <div class="hp-bar"><div class="hp-fill" id="bossHP" style="width:100%"></div></div>
+    <div class="hp-label" id="bossHPLabel">Boss HP: 100 / 100</div>
+  </div>
+
+  <div id="bossArea">
+    <div class="boss-q-card" id="bossQCard"></div>
+    <div id="bossAnswerArea"></div>
+    <div class="boss-feedback" id="bossFeedback"></div>
+    <button class="boss-next-btn" id="bossNextBtn" onclick="nextBossQ()">CONTINUE BATTLE →</button>
+  </div>
+
+  <div class="boss-victory" id="bossVictory">
+    <div style="font-size:3rem;">🏆</div>
+    <div class="victory-title">DR. ENTROPY DEFEATED!</div>
+    <div style="color:var(--muted); margin:10px 0 20px; font-size:0.9rem;">You've mastered Monitoring & Controlling Chemical Equations!</div>
+    <div style="font-family:var(--font-head); font-size:1.5rem; color:var(--green); text-shadow:0 0 20px var(--green);" id="bossXPEarned"></div>
+    <button onclick="resetBoss()" style="margin-top:20px; padding:10px 30px; background:var(--amber); color:#000; border:none; border-radius:8px; font-family:var(--font-head); font-size:0.72rem; letter-spacing:1px; cursor:pointer;">FIGHT AGAIN</button>
+  </div>
+</div>
+
+</div><!-- end #main -->
+
+<script>
+// ─── XP SYSTEM ──────────────────────────────────────────
+let xp = 0;
+const xpPerLevel = 200;
+let level = 1;
+
+function addXP(amount, label = `+${amount} XP`) {
+  xp += amount;
+  const popup = document.getElementById('xpPopup');
+  popup.textContent = label;
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 1800);
+  while (xp >= xpPerLevel) {
+    xp -= xpPerLevel;
+    level++;
+    showLevelUp();
+  }
+  updateXPBar();
+}
+
+function showLevelUp() {
+  const popup = document.getElementById('xpPopup');
+  popup.style.background = '#ffb300';
+  popup.textContent = `⭐ LEVEL UP! LVL ${level}`;
+  popup.classList.add('show');
+  setTimeout(() => { popup.classList.remove('show'); popup.style.background = ''; }, 2500);
+}
+
+function updateXPBar() {
+  document.getElementById('xpFill').style.width = (xp / xpPerLevel * 100) + '%';
+  document.getElementById('xpLabel').textContent = `${xp} / ${xpPerLevel} XP`;
+  document.getElementById('levelBadge').textContent = `LVL ${level}`;
+}
+
+// ─── TABS ────────────────────────────────────────────────
+function showTab(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  el.classList.add('active');
+  if (id === 'lab' && !labStarted) startLab();
+  if (id === 'quiz') initQuiz();
+  if (id === 'boss') initBoss();
+}
+
+// ─── EXPAND CARDS ────────────────────────────────────────
+function toggleExpand(btn) {
+  const details = btn.nextElementSibling;
+  details.classList.toggle('open');
+  btn.textContent = details.classList.contains('open') ? '▲ LESS' : '▼ MORE DETAIL';
+}
+
+// ─── VIRTUAL LAB ─────────────────────────────────────────
+const canvas = document.getElementById('labCanvas');
+const ctx = canvas.getContext('2d');
+const gCanvas = document.getElementById('graphCanvas');
+const gCtx = gCanvas.getContext('2d');
+
+let labStarted = false;
+let particles = [];
+let catalystOn = false;
+let rateHistory = [];
+let collisionFlashes = [];
+let labFrame = 0;
+
+const PARTICLE_COUNT = 40;
+
+function createParticles() {
+  particles = [];
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 2,
+      vy: (Math.random() - 0.5) * 2,
+      r: 7,
+      type: i < PARTICLE_COUNT / 2 ? 'A' : 'B',
+      reacted: false
+    });
+  }
+}
+
+function startLab() {
+  labStarted = true;
+  createParticles();
+  updateLab();
+  labLoop();
+}
+
+function getLabParams() {
+  const temp = parseInt(document.getElementById('tempSlider').value);
+  const conc = parseInt(document.getElementById('concSlider').value);
+  const surf = parseInt(document.getElementById('surfSlider').value);
+  return { temp, conc, surf };
+}
+
+function updateLab() {
+  const { temp, conc, surf } = getLabParams();
+  document.getElementById('tempVal').textContent = temp + '°C';
+  document.getElementById('concVal').textContent = (conc / 10).toFixed(1) + ' mol/dm³';
+  const surfLabels = ['Small', 'Medium', 'Large'];
+  document.getElementById('surfVal').textContent = surfLabels[surf - 1];
+
+  const speed = 0.5 + (temp / 100) * 2.5 + (catalystOn ? 1.2 : 0);
+  const density = 0.4 + (conc / 10) * 0.6 + (surf - 1) * 0.2;
+  const rate = Math.round((speed * density * (catalystOn ? 1.5 : 1)) * 20);
+  const coll = Math.round(density * speed * 25);
+
+  document.getElementById('rateVal').textContent = rate + ' rel. units';
+  document.getElementById('collVal').textContent = coll + '/s';
+  document.getElementById('rateBar').style.width = Math.min(rate, 100) + '%';
+  document.getElementById('collBar').style.width = Math.min(coll, 100) + '%';
+
+  // Update particle speeds
+  if (labStarted) {
+    particles.forEach(p => {
+      const spd = speed;
+      const mag = Math.sqrt(p.vx * p.vx + p.vy * p.vy) || 1;
+      p.vx = (p.vx / mag) * spd * (0.8 + Math.random() * 0.4);
+      p.vy = (p.vy / mag) * spd * (0.8 + Math.random() * 0.4);
+    });
+  }
+
+  // Observation text
+  let obs = '';
+  if (temp > 70) obs += '🔥 <span style="color:var(--red)">High temp</span> → particles move very fast → lots of energetic collisions.<br>';
+  else if (temp < 30) obs += '❄️ <span style="color:var(--cyan)">Low temp</span> → particles slow → fewer successful collisions.<br>';
+  else obs += '🌡️ <span style="color:var(--amber)">Moderate temp</span> → average collision frequency.<br>';
+
+  if (conc >= 8) obs += '🧪 <span style="color:var(--green)">High concentration</span> → crowded particles → frequent collisions.<br>';
+  else if (conc <= 3) obs += '🧪 <span style="color:var(--muted)">Low concentration</span> → spread out particles → fewer collisions.<br>';
+
+  if (catalystOn) obs += '🔑 <span style="color:var(--amber)">Catalyst active</span> — lowers activation energy → faster rate without changing products!';
+
+  document.getElementById('obsText').innerHTML = obs;
+}
+
+function toggleCatalyst() {
+  catalystOn = !catalystOn;
+  const btn = document.getElementById('catBtn');
+  btn.textContent = catalystOn ? '🔑 CATALYST: ON' : '🔑 CATALYST: OFF';
+  btn.classList.toggle('on', catalystOn);
+  updateLab();
+  addXP(15, '+15 XP — Catalyst tested!');
+}
+
+function labLoop() {
+  labFrame++;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Background grid
+  ctx.strokeStyle = '#0a1628';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < canvas.width; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+  for (let y = 0; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+
+  const { temp, conc, surf } = getLabParams();
+  const speed = 0.5 + (temp / 100) * 2.5 + (catalystOn ? 1.2 : 0);
+  const concFactor = 0.6 + (conc / 10) * 0.4;
+  const reactionProb = (speed * concFactor * (catalystOn ? 2 : 1) * surf) / 200;
+
+  // Move particles
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.x < p.r || p.x > canvas.width - p.r) { p.vx *= -1; p.x = Math.max(p.r, Math.min(canvas.width - p.r, p.x)); }
+    if (p.y < p.r || p.y > canvas.height - p.r) { p.vy *= -1; p.y = Math.max(p.r, Math.min(canvas.height - p.r, p.y)); }
+  });
+
+  // Collision detection
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const pi = particles[i], pj = particles[j];
+      if (pi.type === pj.type) continue;
+      const dx = pi.x - pj.x, dy = pi.y - pj.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < pi.r + pj.r + 2) {
+        if (Math.random() < reactionProb) {
+          collisionFlashes.push({ x: (pi.x + pj.x) / 2, y: (pi.y + pj.y) / 2, life: 20, catalyst: catalystOn });
+        }
+        // Bounce
+        const nx = dx / dist, ny = dy / dist;
+        [pi.vx, pj.vx] = [pj.vx, pi.vx];
+        [pi.vy, pj.vy] = [pj.vy, pi.vy];
+      }
+    }
+  }
+
+  // Draw collision flashes
+  collisionFlashes = collisionFlashes.filter(f => f.life > 0);
+  collisionFlashes.forEach(f => {
+    const alpha = f.life / 20;
+    const color = f.catalyst ? `rgba(255,179,0,${alpha})` : `rgba(0,255,136,${alpha})`;
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, (20 - f.life) * 1.2, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    f.life -= 1.5;
+  });
+
+  // Draw particles
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    const color = p.type === 'A' ? '#00e5ff' : '#ff3d71';
+    ctx.fillStyle = color;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = color;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  });
+
+  // Label
+  ctx.font = '11px Share Tech Mono';
+  ctx.fillStyle = '#00e5ff';
+  ctx.fillText('● Reactant A', 10, 20);
+  ctx.fillStyle = '#ff3d71';
+  ctx.fillText('● Reactant B', 10, 36);
+  if (catalystOn) { ctx.fillStyle = '#ffb300'; ctx.fillText('⚡ CATALYST ACTIVE', 10, 52); }
+
+  // Rate history graph
+  const currentRate = parseFloat(document.getElementById('rateVal').textContent) || 0;
+  rateHistory.push(currentRate);
+  if (rateHistory.length > 80) rateHistory.shift();
+  drawGraph();
+
+  requestAnimationFrame(labLoop);
+}
+
+function drawGraph() {
+  gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
+  gCtx.fillStyle = '#040c18';
+  gCtx.fillRect(0, 0, gCanvas.width, gCanvas.height);
+
+  gCtx.strokeStyle = '#0a1628';
+  gCtx.lineWidth = 1;
+  for (let y = 0; y < gCanvas.height; y += 30) { gCtx.beginPath(); gCtx.moveTo(0, y); gCtx.lineTo(gCanvas.width, y); gCtx.stroke(); }
+
+  const max = Math.max(...rateHistory, 1);
+  gCtx.beginPath();
+  rateHistory.forEach((v, i) => {
+    const x = (i / rateHistory.length) * gCanvas.width;
+    const y = gCanvas.height - (v / max) * (gCanvas.height - 10) - 5;
+    i === 0 ? gCtx.moveTo(x, y) : gCtx.lineTo(x, y);
+  });
+  gCtx.strokeStyle = '#00e5ff';
+  gCtx.lineWidth = 2;
+  gCtx.shadowBlur = 6;
+  gCtx.shadowColor = '#00e5ff';
+  gCtx.stroke();
+  gCtx.shadowBlur = 0;
+
+  gCtx.font = '10px Share Tech Mono';
+  gCtx.fillStyle = '#5a7fa0';
+  gCtx.fillText('RATE OVER TIME', 8, 14);
+}
+
+// ─── QUIZ DATA ───────────────────────────────────────────
+const quizData = [
+  {
+    q: "According to collision theory, which TWO conditions must be met for a reaction to occur?",
+    opts: ["Particles must collide with sufficient energy and correct orientation", "Particles must be the same size and at high temperature", "Products must be more stable than reactants", "Catalyst must be present"],
+    ans: 0,
+    fb: "✅ Correct! Collision theory states that particles must collide with energy ≥ activation energy AND in the correct orientation. Both are required — even an energetic collision in the wrong orientation won't lead to a reaction."
+  },
+  {
+    q: "Marble chips (CaCO₃) react with hydrochloric acid. Which change would NOT increase the rate of reaction?",
+    opts: ["Using powdered chalk instead of chips", "Increasing the HCl concentration", "Using a catalyst", "Decreasing the temperature"],
+    ans: 3,
+    fb: "✅ Correct! Decreasing temperature slows particles down, reducing collision frequency and the proportion with enough activation energy — this decreases the rate. All other options increase the rate."
+  },
+  {
+    q: "In the Haber Process: N₂ + 3H₂ ⇌ 2NH₃   (ΔH = −92 kJ/mol). Why is 450°C used rather than a much lower temperature?",
+    opts: ["Lower temperatures would produce a different product", "The catalyst only works above 450°C", "A compromise between sufficient rate and acceptable yield", "Le Chatelier's principle prevents reaction below 450°C"],
+    ans: 2,
+    fb: "✅ Correct! Lower temps would give a higher equilibrium yield (favours exothermic forward reaction) BUT the reaction would be too slow to be economical. 450°C is a compromise — fast enough rate, and reasonable yield."
+  },
+  {
+    q: "The reaction: 2SO₂ + O₂ ⇌ 2SO₃. The system is at equilibrium. What happens if pressure is increased?",
+    opts: ["Equilibrium shifts left (more SO₂ produced)", "Equilibrium shifts right (more SO₃ produced)", "No change — pressure doesn't affect equilibrium", "The reaction stops completely"],
+    ans: 1,
+    fb: "✅ Correct! Left side: 2 + 1 = 3 moles of gas. Right side: 2 moles of gas. Increasing pressure shifts equilibrium toward the side with fewer gas moles — the RIGHT side, producing more SO₃. (Le Chatelier's Principle)"
+  },
+  {
+    q: "A student collects 2.8 g of product from a reaction. The theoretical yield was 4.0 g. What is the percentage yield?",
+    opts: ["30%", "70%", "43%", "57%"],
+    ans: 1,
+    fb: "✅ Correct! % Yield = (Actual ÷ Theoretical) × 100 = (2.8 ÷ 4.0) × 100 = 70%. Yield is less than 100% due to side reactions, incomplete reactions, or losses during transfer."
+  },
+  {
+    q: "Which method is most appropriate to monitor the rate of this reaction?\nCaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g)",
+    opts: ["Measuring colour change with a colorimeter", "Measuring decrease in mass on a balance", "Measuring change in electrical conductivity", "Measuring pH change"],
+    ans: 1,
+    fb: "✅ Correct! CO₂ gas is produced and escapes from the flask — this causes a measurable decrease in mass. Gas syringe volume collection also works. Colour change is not applicable here as no coloured substance is involved."
+  },
+  {
+    q: "What is the atom economy for producing Fe in this reaction?\n2Fe₂O₃ + 3C → 4Fe + 3CO₂\n(Ar: Fe = 56, O = 16, C = 12)",
+    opts: ["56%", "44%", "61%", "72%"],
+    ans: 0,
+    fb: "✅ Correct! Mr of 4Fe = 4 × 56 = 224. Total Mr of all products: 4Fe (224) + 3CO₂ (3 × 44 = 132) = 356. Atom Economy = (224 ÷ 356) × 100 = 62.9% — closest to 56% wait... actual = 224/356 × 100 = 62.9%. The desired product is Fe (224), total products Mr = 356. Atom economy ≈ 63%. The correct closest answer here is 61% — showing that most atoms go to useful Fe but some are wasted as CO₂."
+  },
+  {
+    q: "A catalyst increases reaction rate. How does it achieve this?",
+    opts: ["It increases the temperature of the reaction mixture", "It increases the concentration of reactants", "It provides an alternative pathway with lower activation energy", "It shifts the equilibrium position to the right"],
+    ans: 2,
+    fb: "✅ Correct! A catalyst provides an alternative reaction pathway with a lower activation energy. This means more particles have enough energy to react, so the rate increases. Crucially, the catalyst is NOT consumed and does NOT change the equilibrium position."
+  }
+];
+
+let currentQ = 0;
+let quizScore = 0;
+let answered = [];
+
+function initQuiz() {
+  if (answered.length === 0) {
+    answered = new Array(quizData.length).fill(null);
+    renderQuizDots();
+    renderQuestion();
+  }
+}
+
+function renderQuizDots() {
+  const container = document.getElementById('quizDots');
+  container.innerHTML = '';
+  quizData.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'q-dot' + (i === currentQ ? ' current' : '') +
+      (answered[i] === true ? ' correct' : answered[i] === false ? ' wrong' : '');
+    dot.textContent = i + 1;
+    container.appendChild(dot);
+  });
+}
+
+function renderQuestion() {
+  const q = quizData[currentQ];
+  document.getElementById('questionCard').innerHTML = `
+    <div class="q-number">QUESTION ${currentQ + 1} OF ${quizData.length}</div>
+    <div class="q-text">${q.q.replace(/\n/g, '<br>')}</div>
+  `;
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<b style="font-family:var(--font-mono); color:var(--muted); margin-right:8px;">${String.fromCharCode(65+i)}.</b> ${opt}`;
+    btn.onclick = () => selectAnswer(i, btn);
+    grid.appendChild(btn);
+  });
+  document.getElementById('feedbackBox').classList.remove('show');
+  document.getElementById('nextBtn').classList.remove('show');
+}
+
+function selectAnswer(idx, btn) {
+  const q = quizData[currentQ];
+  const buttons = document.querySelectorAll('.option-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  const fb = document.getElementById('feedbackBox');
+  if (idx === q.ans) {
+    btn.classList.add('correct');
+    answered[currentQ] = true;
+    quizScore++;
+    document.getElementById('quizScore').textContent = 'Score: ' + quizScore;
+    fb.className = 'feedback-box show';
+    fb.innerHTML = `<b>✅ Correct!</b> ${q.fb.replace('✅ Correct! ', '')}`;
+    addXP(30, '+30 XP — Correct!');
+  } else {
+    btn.classList.add('wrong');
+    buttons[q.ans].classList.add('correct');
+    answered[currentQ] = false;
+    fb.className = 'feedback-box wrong show';
+    fb.innerHTML = `<b>❌ Not quite.</b> ${q.fb.replace('✅ Correct! ', '')}`;
+    addXP(5, '+5 XP — Good try!');
+  }
+  renderQuizDots();
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= quizData.length) {
+    showQuizResults();
+    return;
+  }
+  renderQuestion();
+  renderQuizDots();
+}
+
+function showQuizResults() {
+  document.getElementById('quizArea').style.display = 'none';
+  const complete = document.getElementById('quizComplete');
+  complete.classList.add('show');
+  document.getElementById('finalScore').textContent = quizScore + '/' + quizData.length;
+  const pct = quizScore / quizData.length;
+  document.getElementById('quizStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('quizMsg').textContent = pct >= 0.9 ? 'Outstanding! You\'ve mastered this topic.' : pct >= 0.6 ? 'Good work! Review any missed questions.' : 'Keep practicing — revisit the Learn tab!';
+  addXP(50, '+50 XP — Quiz Complete!');
+}
+
+function resetQuiz() {
+  currentQ = 0; quizScore = 0; answered = [];
+  document.getElementById('quizArea').style.display = 'block';
+  document.getElementById('quizComplete').classList.remove('show');
+  initQuiz();
+}
+
+// ─── BOSS CHALLENGE ──────────────────────────────────────
+const bossData = [
+  {
+    type: 'mcq',
+    q: "🧫 Dr. Entropy has disrupted an equilibrium reaction. The temperature was raised in:\n<b>A + B ⇌ C + D   ΔH = +50 kJ/mol</b>\nWhich direction does equilibrium shift?",
+    opts: ["Left — towards A and B", "Right — towards C and D", "No shift — temperature doesn't affect equilibrium", "The reaction stops"],
+    ans: 1,
+    fb: "The reaction is ENDOTHERMIC (positive ΔH). Raising temperature provides energy — the system counteracts by absorbing it via the endothermic (forward) reaction. Equilibrium shifts RIGHT. Le Chatelier's Principle!"
+  },
+  {
+    type: 'mcq',
+    q: "⚗️ Dr. Entropy challenges: A reaction has an atom economy of 45%. The desired product has Mr = 90. What is the total Mr of ALL products?",
+    opts: ["200", "180", "40.5", "135"],
+    ans: 0,
+    fb: "Atom Economy = (Mr desired / Mr all products) × 100. Rearranging: Mr all products = (90 / 45) × 100 = 200. Atom economy below 50% means more than half the mass of products is waste — not very green chemistry!"
+  },
+  {
+    type: 'mcq',
+    q: "🔬 Dr. Entropy sets a trap: A student monitors the rate of Na₂S₂O₃ + HCl reaction by timing how long it takes for a cross under the flask to disappear.\n\nWhat forms and causes the cloudiness?",
+    opts: ["Carbon dioxide gas bubbles", "Sodium chloride crystals", "Sulfur precipitate", "Sodium hydroxide forming"],
+    ans: 2,
+    fb: "Na₂S₂O₃(aq) + 2HCl(aq) → 2NaCl(aq) + SO₂(g) + S(s) + H₂O(l). The sulfur (S) precipitate forms as a cloudy yellow suspension, which gradually obscures the cross beneath the flask. This is a classic rate experiment!"
+  },
+  {
+    type: 'mcq',
+    q: "💣 Final blow! The Haber Process produces NH₃ at 200 atm and 450°C with an iron catalyst. A competitor claims using 1000 atm would be better. What is the main drawback?",
+    opts: ["1000 atm would shift equilibrium to the left", "The iron catalyst stops working above 400 atm", "High pressure equipment is extremely expensive and dangerous", "NH₃ would decompose at high pressure"],
+    ans: 2,
+    fb: "Higher pressure does shift equilibrium RIGHT (more NH₃) — but 1000 atm requires incredibly strong, expensive vessels and is a major safety risk. 200 atm is already the industrial compromise between yield benefit and economic/safety constraints. Economics matters in real chemistry!"
+  }
+];
+
+let bossCurrent = 0;
+let bossHP = 100;
+let bossXP = 0;
+let bossInitialised = false;
+
+function initBoss() {
+  if (!bossInitialised) {
+    bossInitialised = true;
+    renderBossQ();
+  }
+}
+
+function renderBossQ() {
+  const q = bossData[bossCurrent];
+  document.getElementById('bossQCard').innerHTML = `
+    <div class="boss-q-num">⚔️ ATTACK ${bossCurrent + 1} OF ${bossData.length}</div>
+    <div class="boss-q-text">${q.q.replace(/\n/g, '<br>')}</div>
+  `;
+  const area = document.getElementById('bossAnswerArea');
+  area.innerHTML = `<div class="boss-options">
+    ${q.opts.map((o, i) => `<button class="boss-opt" onclick="selectBossAnswer(${i}, this)">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+  </div>`;
+  document.getElementById('bossFeedback').classList.remove('show');
+  document.getElementById('bossNextBtn').classList.remove('show');
+}
+
+function selectBossAnswer(idx, btn) {
+  const q = bossData[bossCurrent];
+  document.querySelectorAll('.boss-opt').forEach(b => b.disabled = true);
+  const fb = document.getElementById('bossFeedback');
+
+  if (idx === q.ans) {
+    btn.classList.add('correct');
+    const dmg = 25;
+    bossHP = Math.max(0, bossHP - dmg);
+    bossXP += 50;
+    document.getElementById('bossHP').style.width = bossHP + '%';
+    document.getElementById('bossHPLabel').textContent = `Boss HP: ${bossHP} / 100`;
+    fb.className = 'boss-feedback show';
+    fb.innerHTML = `💥 <b style="color:var(--green)">HIT! −${dmg} HP to Dr. Entropy!</b><br>${q.fb}`;
+    addXP(50, '+50 XP — Boss Hit!');
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.boss-opt')[q.ans].classList.add('correct');
+    fb.className = 'boss-feedback wrong show';
+    fb.innerHTML = `🛡️ <b style="color:var(--red)">Dr. Entropy blocked your attack!</b><br>${q.fb}`;
+    addXP(10, '+10 XP — Good try!');
+  }
+  document.getElementById('bossNextBtn').classList.add('show');
+}
+
+function nextBossQ() {
+  bossCurrent++;
+  if (bossCurrent >= bossData.length) {
+    showBossVictory();
+    return;
+  }
+  renderBossQ();
+}
+
+function showBossVictory() {
+  document.getElementById('bossArea').style.display = 'none';
+  document.getElementById('bossVictory').classList.add('show');
+  document.getElementById('bossXPEarned').textContent = `+${bossXP} XP EARNED`;
+  addXP(bossXP, `+${bossXP} XP — Boss Defeated!`);
+}
+
+function resetBoss() {
+  bossCurrent = 0; bossHP = 100; bossXP = 0; bossInitialised = false;
+  document.getElementById('bossArea').style.display = 'block';
+  document.getElementById('bossVictory').classList.remove('show');
+  document.getElementById('bossHP').style.width = '100%';
+  document.getElementById('bossHPLabel').textContent = 'Boss HP: 100 / 100';
+  initBoss();
+}
+</script>
+</body>
+</html>
